@@ -3,11 +3,14 @@
     <router-link to="/login">登录</router-link>
     <router-link to="/main">首页</router-link>
     <router-view></router-view>
+    <el-button type="primary">I am ElButton</el-button>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+// import 'element-plus/es/components/button/style/css';
+// import { ElButton } from 'element-plus';
 
 export default defineComponent({
   name: 'App',
