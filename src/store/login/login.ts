@@ -49,10 +49,13 @@ const loginModule: Module<ILoginState, IRootState> = {
 
       // 3.请求用户菜单
       const userMenusResult = await requestUserMenusByRoleId(userInfo.role.id);
+      userMenusResult.data.forEach((item: any) => {
+        item.icon = item.icon.split('-')[2];
+      });
       const userMenus = userMenusResult.data;
       // console.log(userMenus);
       commit('changeUserMenus', userMenus);
-      localCache.setCache('UserMenus', userMenus);
+      localCache.setCache('userMenus', userMenus);
 
       // 4.跳转到首页
       router.push('/main');

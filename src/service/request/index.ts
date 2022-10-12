@@ -56,9 +56,9 @@ class ZKRequest {
         console.log('所有的实例都有的拦截器：响应成功拦截');
 
         // 将loading移除
-        setTimeout(() => {
-          this.loading?.close();
-        }, 2000);
+        // setTimeout(() => {
+        this.loading?.close();
+        // }, 2000);
 
         const data = res.data;
         if (data.returnCode === '-1001') {
