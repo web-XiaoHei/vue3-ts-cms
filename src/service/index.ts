@@ -2,14 +2,16 @@
 
 import ZKRequest from './request';
 import { BASE_URL, TIME_OUT } from './request/config';
-
+import localCahe from '@/utils/cache';
 const zkRequest = new ZKRequest({
   baseURL: BASE_URL,
   timeout: TIME_OUT,
   interceptors: {
     requestInterceptor: (config) => {
       // 携带token的拦截
-      const token = '';
+      const token = localCahe.getCache('token');
+      // console.log(token, 'token');
+
       if (token) {
         if (config.headers) {
           config.headers.Authorization = `Bearer ${token}`;
