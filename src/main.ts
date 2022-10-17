@@ -15,13 +15,14 @@ import { setupStore } from './store';
 
 // import './service/axios_demo.ts';
 const app = createApp(App);
+setupStore();
 app.use(router);
 app.use(store);
 // app.use(ElementPlus);
 // globalRegister(app);
 app.use(globalRegister);
 app.mount('#app');
-setupStore();
+
 // console.log(process.env.VUE_APP_BASE_URL, 'BASE_URL');
 // console.log(process.env.VUE_APP_BASE_NAME, 'BASE_NAME');
 

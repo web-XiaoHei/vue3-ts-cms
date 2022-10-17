@@ -8,17 +8,22 @@
       ></component>
     </el-icon>
     <div class="content">
-      <div>面包屑</div>
+      <zk-Breadcrumb :breadcrumbs="breadcrumbs"></zk-Breadcrumb>
       <user-info />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, computed } from 'vue';
 import UserInfo from './user-info.vue';
+import zkBreadcrumb from '@/base-ui/breadcrumb';
+import { pathMapBreadcrumbs } from '@/utils/map-menus';
+import { useStore } from '@/store';
+import { useRoute } from 'vue-router';
+
 export default defineComponent({
-  components: { UserInfo },
+  components: { UserInfo, zkBreadcrumb },
   emits: ['foldChange'],
   setup(props, { emit }) {
     const isFold = ref(true);
@@ -26,7 +31,20 @@ export default defineComponent({
       isFold.value = !isFold.value;
       emit('foldChange', isFold.value);
     };
-    return { isFold, handleFoldClick };
+
+    // 面包屑的数据
+    const store = useStore();
+    const route = useRoute();
+    const breadcrumbs = computed(() => {
+      const userMenus = store.state.login.userMenus;
+      const currentPath = route.path;
+
+      return pathMapBreadcrumbs(userMenus, currentPath);
+    });
+
+    console.log(breadcrumbs.value);
+
+    return { isFold, handleFoldClick, breadcrumbs };
   },
 });
 </script>
