@@ -42,7 +42,7 @@ export default defineComponent({
       return pathMapBreadcrumbs(userMenus, currentPath);
     });
 
-    console.log(breadcrumbs.value);
+    // console.log(breadcrumbs.value);
 
     return { isFold, handleFoldClick, breadcrumbs };
   },
