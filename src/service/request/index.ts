@@ -112,16 +112,16 @@ class ZKRequest {
     });
   }
 
-  get<T>(config: ZKRequestConfig<T>): Promise<T> {
+  get<T = any>(config: ZKRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'GET' });
   }
-  post<T>(config: ZKRequestConfig<T>): Promise<T> {
+  post<T = any>(config: ZKRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'POST' });
   }
-  delete<T>(config: ZKRequestConfig<T>): Promise<T> {
+  delete<T = any>(config: ZKRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'DELETE' });
   }
-  patch<T>(config: ZKRequestConfig<T>): Promise<T> {
+  patch<T = any>(config: ZKRequestConfig<T>): Promise<T> {
     return this.request<T>({ ...config, method: 'PATCH' });
   }
 }

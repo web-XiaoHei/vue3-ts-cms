@@ -52,5 +52,6 @@ export default defineComponent({
 <style scoped>
 .handle-btns {
   padding: 0 50px 20px 0;
+  text-align: right;
 }
 </style>

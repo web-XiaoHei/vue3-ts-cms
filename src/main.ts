@@ -21,6 +21,9 @@ app.use(store);
 // app.use(ElementPlus);
 // globalRegister(app);
 app.use(globalRegister);
+
+//
+
 app.mount('#app');
 
 // console.log(process.env.VUE_APP_BASE_URL, 'BASE_URL');
