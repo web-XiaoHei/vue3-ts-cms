@@ -61,28 +61,36 @@ export default defineComponent({
   components: { ZkTable },
   setup(props) {
     const store = useStore();
-    store.dispatch('system/getPageListAction', {
-      pageName: props.pageName,
-      queryInfo: {
-        offset: 0,
-        size: 10,
-      },
-    });
+
+    // 发送网络请求
+    const getPageData = (queryInfo: any = {}) => {
+      // console.log({ ...queryInfo.value }, 'queryInfo');
+
+      store.dispatch('system/getPageListAction', {
+        pageName: props.pageName,
+        queryInfo: {
+          offset: 0,
+          size: 10,
+          ...queryInfo,
+        },
+      });
+    };
+    getPageData();
 
     // const userList = computed(() => store.state.system.userList);
     // const userCount = computed(() => store.state.system.userCount);
 
+    // 从vuex中获取数据
     const dataList = computed(() => {
       return store.getters[`system/pageListData`](props.pageName);
     });
-
-    console.log(dataList, 'dataList------');
 
     return {
       Edit,
       Delete,
       RefreshRight,
       dataList,
+      getPageData,
     };
   },
 });

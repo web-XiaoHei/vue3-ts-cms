@@ -18,7 +18,7 @@ const zkRequest = new ZKRequest({
         }
       }
 
-      console.log('请求成功的拦截');
+      // console.log('请求成功的拦截');
       return config;
     },
     requestInterceptorCatch: (err) => {
@@ -26,7 +26,7 @@ const zkRequest = new ZKRequest({
       return err;
     },
     responseInterceptor: (config) => {
-      console.log('响应成功的拦截');
+      // console.log('响应成功的拦截');
       return config;
     },
     responseInterceptorCatch: (err) => {

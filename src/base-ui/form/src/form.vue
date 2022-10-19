@@ -93,6 +93,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
   setup(props, { emit }) {
     // 拷贝一份数据，只是取到值
+    // const formData = computed(() => ({ ...props.modelValue }));
     const formData = ref({ ...props.modelValue });
     watch(
       formData,
