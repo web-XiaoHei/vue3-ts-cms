@@ -1,6 +1,6 @@
 import { IForm } from '@/base-ui/form';
 
-export const formConfig: IForm = {
+export const searchFormConfig: IForm = {
   labelWidth: '120px',
   colLayout: {
     xl: 6, // >1920px 4个
