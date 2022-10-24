@@ -6,13 +6,16 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "prettier": "prettier --write .",
+    "commit": "git add . && cz",
     "prepare": "husky install",
-    "commit": "git add . && cz"
+    "prettier": "prettier --write ."
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.9",
     "@volar-plugins/vetur": "^0.1.0",
+    "@vue/compiler-sfc": "^3.2.41",
+    "@yzfe/svgicon": "^1.1.0",
+    "@yzfe/vue3-svgicon": "^1.0.1",
     "core-js": "^3.8.3",
     "normalize.css": "^8.0.1",
     "vue": "^3.2.13"
@@ -28,6 +31,8 @@
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
+    "@yzfe/svgicon-loader": "^1.2.0",
+    "@yzfe/vue-cli-plugin-svgicon": "~1.2.1",
     "axios": "^0.27.2",
     "commitizen": "^4.2.5",
     "cz-conventional-changelog": "^3.3.0",
@@ -44,6 +49,7 @@
     "prettier": "^2.7.1",
     "typescript": "~4.5.5",
     "unplugin-element-plus": "^0.4.1",
+    "vue-loader": "^17.0.0",
     "vue-router": "^4.1.5",
     "vuex": "^4.0.2"
   },

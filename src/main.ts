@@ -9,12 +9,16 @@ import 'normalize.css';
 import './assets/css/index.less';
 import { setupStore } from './store';
 
+import { VueSvgIconPlugin } from '@yzfe/vue3-svgicon';
+
 // 全局引入element-plus
 // import ElementPlus from 'element-plus';
 // import 'element-plus/dist/index.css';
 
 // import './service/axios_demo.ts';
-const app = createApp(App);
+const app = createApp(App)
+  .use(VueSvgIconPlugin, { tagName: 'icon' })
+  .use(VueSvgIconPlugin, { tagName: 'icon' });
 setupStore();
 app.use(router);
 app.use(store);

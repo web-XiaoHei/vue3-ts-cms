@@ -40,18 +40,15 @@
 
     <div class="footer">
       <slot name="footer">
-        <!-- <el-pagination
+        <el-pagination
           v-model:currentPage="currentPage4"
           v-model:page-size="pageSize4"
-          :page-sizes="[100, 200, 300, 400]"
-          :small="small"
-          :disabled="disabled"
-          :background="background"
+          :page-sizes="[10, 20, 30, 40]"
           layout="total, sizes, prev, pager, next, jumper"
-          :total="400"
+          :total="listCount"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
-        /> -->
+        />
       </slot>
     </div>
   </div>
@@ -69,6 +66,10 @@ export default defineComponent({
     listData: {
       type: Array,
       required: true,
+    },
+    listCount: {
+      type: Number,
+      defalt: 0,
     },
     propList: {
       type: Array as PropType<any[]>,

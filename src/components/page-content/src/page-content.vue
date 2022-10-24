@@ -1,6 +1,10 @@
 <template>
   <div class="page-content">
-    <zk-table :listData="dataList" v-bind="contentTableConfig">
+    <zk-table
+      :listData="dataList"
+      v-bind="contentTableConfig"
+      :listCount="dataCount"
+    >
       <!-- 1.头部的插槽 -->
       <template #headerHandler>
         <el-button type="primary" size="default">新建用户</el-button>
@@ -78,18 +82,20 @@ export default defineComponent({
     getPageData();
 
     // const userList = computed(() => store.state.system.userList);
-    // const userCount = computed(() => store.state.system.userCount);
 
     // 从vuex中获取数据
     const dataList = computed(() => {
       return store.getters[`system/pageListData`](props.pageName);
     });
-
+    const dataCount = computed(() => {
+      return store.getters[`system/pageListCount`](props.pageName);
+    });
     return {
       Edit,
       Delete,
       RefreshRight,
       dataList,
+      dataCount,
       getPageData,
     };
   },

@@ -23,12 +23,17 @@ const systemModule: Module<ISystemState, IRootState> = {
     changeRoleList(state, list: any[]) {
       state.roleList = list;
     },
-    changeRoleCount(state, count: number) {
-      state.roleCount = count;
+    changeRoleCount(state, roleCount: number) {
+      state.roleCount = roleCount;
     },
   },
   getters: {
     pageListData(state) {
+      return (pageName: string) => {
+        return (state as any)[`${pageName}List`];
+      };
+    },
+    pageListCount(state) {
       return (pageName: string) => {
         return (state as any)[`${pageName}List`];
       };
