@@ -1,16 +1,46 @@
 <template>
-  <div class="goods">
-    <h2>goods</h2>
+  <div>
+    <page-content :contentTableConfig="contentTableConfig" pageName="goods">
+      <template #image="scope">
+        <el-image
+          style="width: 60px; height: 60px"
+          :src="scope.row.imgUrl"
+          :preview-src-list="pictureList"
+          :hide-on-click-modal="hideOnClickModal"
+          preview-teleported
+          :initial-index="4"
+          fit="cover"
+          @load="gotAllPicture(scope.row.imgUrl)"
+        ></el-image>
+      </template>
+      <template #oldPrice="scope">{{ '¥ ' + scope.row.oldPrice }}</template>
+    </page-content>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-
+import { defineComponent, ref, toRaw } from 'vue';
+import pageContent from '@/components/page-content';
+import { contentTableConfig } from './config/content.config';
 export default defineComponent({
-  name: 'goods',
+  components: {
+    pageContent,
+  },
   setup() {
-    return {};
+    const hideOnClickModal = ref(true);
+
+    const pictureList = ref<any>([]);
+
+    const gotAllPicture = (scope: any) => {
+      pictureList.value.push(toRaw(scope));
+    };
+
+    return {
+      pictureList,
+      hideOnClickModal,
+      contentTableConfig,
+      gotAllPicture,
+    };
   },
 });
 </script>

@@ -10,9 +10,6 @@
       pageName="users"
       ref="pageContentRef"
     ></page-content>
-    <div>
-      <icon :data="yesUrl"></icon>
-    </div>
   </div>
 </template>
 
@@ -27,7 +24,7 @@ import { contentTableConfig } from './config/content.config';
 
 import { usePageSearch } from '@/hooks/usePageSearch';
 
-import yesUrl from '@/icons/svg/yes.svg';
+// import yesUrl from '@/icons/svg/yes.svg';
 
 export default defineComponent({
   name: 'users',
@@ -51,7 +48,6 @@ export default defineComponent({
       handleResetClick,
       handleQueryClick,
       pageContentRef,
-      yesUrl,
     };
   },
 });

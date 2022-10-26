@@ -4,6 +4,7 @@
       :listData="dataList"
       v-bind="contentTableConfig"
       :listCount="dataCount"
+      v-model:page="pageInfo"
     >
       <!-- 1.头部的插槽 -->
       <template #headerHandler>
@@ -35,9 +36,20 @@
           删除
         </el-button>
       </template>
-    </zk-table>
 
-    <!-- <el-table :data="userList" border style="width: 100%">
+      <!-- 在page-content中动态插入剩余的插槽 -->
+      <template
+        v-for="item in otherPropSlots"
+        :key="item.prop"
+        #[item.slotName]="scope"
+      >
+        <template v-if="item.slotName">
+          <slot :name="item.slotName" :row="scope.row"></slot>
+        </template>
+      </template>
+    </zk-table>
+    <!--
+    <el-table :data="userList" border style="width: 100%">
         <template v-for="item in propList" :key="item.prop">
           <el-table-column v-bind="item" align="center" />
         </template>
@@ -46,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed, PropType } from 'vue';
+import { defineComponent, computed, PropType, ref, watch } from 'vue';
 import { Edit, Delete, RefreshRight } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
 import ZkTable from '@/base-ui/table';
@@ -64,17 +76,23 @@ export default defineComponent({
   },
   components: { ZkTable },
   setup(props) {
+    // 1.双向数据绑定
+    const pageInfo = ref({
+      pageSize: 10,
+      currentPage: 1,
+    });
+    watch(pageInfo, () => getPageData());
     const store = useStore();
 
-    // 发送网络请求
+    // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
-      // console.log({ ...queryInfo.value }, 'queryInfo');
+      console.log({ ...queryInfo.value }, 'queryInfo');
 
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
         queryInfo: {
-          offset: 0,
-          size: 10,
+          offset: (pageInfo.value.currentPage - 1) * pageInfo.value.pageSize,
+          size: pageInfo.value.pageSize,
           ...queryInfo,
         },
       });
@@ -83,13 +101,25 @@ export default defineComponent({
 
     // const userList = computed(() => store.state.system.userList);
 
-    // 从vuex中获取数据
+    // 3.从vuex中获取数据
     const dataList = computed(() => {
       return store.getters[`system/pageListData`](props.pageName);
     });
     const dataCount = computed(() => {
       return store.getters[`system/pageListCount`](props.pageName);
     });
+
+    // 4.获取其他的动态插槽名称
+    const otherPropSlots = props.contentTableConfig?.propList.filter(
+      (item: any) => {
+        if (item.slotName === 'status') return false;
+        if (item.slotName === 'createAt') return false;
+        if (item.slotName === 'updateAt') return false;
+        if (item.slotName === 'handler') return false;
+
+        return true;
+      },
+    );
     return {
       Edit,
       Delete,
@@ -97,6 +127,8 @@ export default defineComponent({
       dataList,
       dataCount,
       getPageData,
+      pageInfo,
+      otherPropSlots,
     };
   },
 });
