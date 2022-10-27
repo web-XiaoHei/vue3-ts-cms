@@ -5,7 +5,7 @@
         <el-image
           style="width: 60px; height: 60px"
           :src="scope.row.imgUrl"
-          :preview-src-list="pictureList"
+          :preview-src-list="[scope.row.imgUrl]"
           :hide-on-click-modal="hideOnClickModal"
           preview-teleported
           :initial-index="4"

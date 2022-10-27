@@ -8,7 +8,9 @@
     >
       <!-- 1.头部的插槽 -->
       <template #headerHandler>
-        <el-button type="primary" size="default">新建用户</el-button>
+        <el-button type="primary" size="default" v-if="isCreate">
+          新建用户
+        </el-button>
         <el-button :icon="RefreshRight">刷新</el-button>
       </template>
 
@@ -29,10 +31,22 @@
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
       <template #handler>
-        <el-button size="small" type="primary" :icon="Edit" link>
+        <el-button
+          v-if="isUpdate"
+          size="small"
+          type="primary"
+          :icon="Edit"
+          link
+        >
           编辑
         </el-button>
-        <el-button size="small" type="primary" :icon="Delete" link>
+        <el-button
+          v-if="isDelete"
+          size="small"
+          type="primary"
+          :icon="Delete"
+          link
+        >
           删除
         </el-button>
       </template>
@@ -62,6 +76,7 @@ import { defineComponent, computed, PropType, ref, watch } from 'vue';
 import { Edit, Delete, RefreshRight } from '@element-plus/icons-vue';
 import { useStore } from 'vuex';
 import ZkTable from '@/base-ui/table';
+import { usePermission } from '@/hooks/usePermission';
 
 export default defineComponent({
   props: {
@@ -76,6 +91,12 @@ export default defineComponent({
   },
   components: { ZkTable },
   setup(props) {
+    // 0 获取用户权限
+    const isCreate = usePermission(props.pageName, 'create');
+    const isUpdate = usePermission(props.pageName, 'update');
+    const isDelete = usePermission(props.pageName, 'delete');
+    const isQuery = usePermission(props.pageName, 'query');
+
     // 1.双向数据绑定
     const pageInfo = ref({
       pageSize: 10,
@@ -86,7 +107,7 @@ export default defineComponent({
 
     // 2.发送网络请求
     const getPageData = (queryInfo: any = {}) => {
-      console.log({ ...queryInfo.value }, 'queryInfo');
+      if (!isQuery) return;
 
       store.dispatch('system/getPageListAction', {
         pageName: props.pageName,
@@ -112,6 +133,18 @@ export default defineComponent({
     // 4.获取其他的动态插槽名称
     const otherPropSlots = props.contentTableConfig?.propList.filter(
       (item: any) => {
+        // const map = {
+        //   status: false,
+        //   createAt: false,
+        //   updateAt: false,
+        //   handler: false,
+        // };
+
+        // if (map[item.slotName]) {
+        //   return map[item.slotName];
+        // } else {
+        //   return true;
+        // }
         if (item.slotName === 'status') return false;
         if (item.slotName === 'createAt') return false;
         if (item.slotName === 'updateAt') return false;
@@ -129,6 +162,9 @@ export default defineComponent({
       getPageData,
       pageInfo,
       otherPropSlots,
+      isCreate,
+      isUpdate,
+      isDelete,
     };
   },
 });
