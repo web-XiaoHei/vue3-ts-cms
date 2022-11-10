@@ -9,26 +9,36 @@
       :contentTableConfig="contentTableConfig"
       pageName="users"
       ref="pageContentRef"
+      @newBtnClick="handleNewData"
+      @editBtnClick="handleEditData"
     ></page-content>
+    <page-model
+      :modelConfig="modelConfig"
+      ref="pageModelRef"
+      :defaultInfo="defaultInfo"
+    ></page-model>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import PageSearch from '@/components/page-search';
 import PageContent from '@/components/page-content';
+import PageModel from '@/components/page-model';
 
 import { searchFormConfig } from './config/search.config';
 import { contentTableConfig } from './config/content.config';
 
 import { usePageSearch } from '@/hooks/usePageSearch';
 
+import { modelConfig } from './config/model.config';
+
 // import yesUrl from '@/icons/svg/yes.svg';
 
 export default defineComponent({
   name: 'users',
-  components: { PageSearch, PageContent },
+  components: { PageSearch, PageContent, PageModel },
   setup() {
     const handleChangeSelct = (payload: any) => {
       console.log(payload);
@@ -40,6 +50,23 @@ export default defineComponent({
 
     const { handleResetClick, handleQueryClick, pageContentRef } =
       usePageSearch();
+
+    const pageModelRef = ref<InstanceType<typeof PageModel>>();
+
+    const defaultInfo = ref({});
+    const handleNewData = () => {
+      if (pageModelRef.value) {
+        pageModelRef.value.dialogVisible = true;
+      }
+    };
+
+    const handleEditData = (item: any) => {
+      defaultInfo.value = { ...item };
+      if (pageModelRef.value) {
+        pageModelRef.value.dialogVisible = true;
+      }
+    };
+
     return {
       handleChangeSelct,
       handleNewUser,
@@ -48,6 +75,11 @@ export default defineComponent({
       handleResetClick,
       handleQueryClick,
       pageContentRef,
+      modelConfig,
+      handleNewData,
+      handleEditData,
+      pageModelRef,
+      defaultInfo,
     };
   },
 });

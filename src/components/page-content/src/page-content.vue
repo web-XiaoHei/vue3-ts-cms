@@ -8,7 +8,12 @@
     >
       <!-- 1.头部的插槽 -->
       <template #headerHandler>
-        <el-button type="primary" size="default" v-if="isCreate">
+        <el-button
+          type="primary"
+          size="default"
+          v-if="isCreate"
+          @click="handleNewClick"
+        >
           新建用户
         </el-button>
         <el-button :icon="RefreshRight">刷新</el-button>
@@ -30,13 +35,14 @@
       <template #updateAt="scope">
         <span>{{ $filters.formatTime(scope.row.updateAt) }}</span>
       </template>
-      <template #handler>
+      <template #handler="scope">
         <el-button
           v-if="isUpdate"
           size="small"
           type="primary"
           :icon="Edit"
           link
+          @click="handleEditClick(scope.row)"
         >
           编辑
         </el-button>
@@ -45,6 +51,7 @@
           size="small"
           type="primary"
           :icon="Delete"
+          @click="handleDeleteClick(scope.row)"
           link
         >
           删除
@@ -55,7 +62,7 @@
       <template
         v-for="item in otherPropSlots"
         :key="item.prop"
-        #[item.slotName]="scope"
+        #[item?.slotName]="scope"
       >
         <template v-if="item.slotName">
           <slot :name="item.slotName" :row="scope.row"></slot>
@@ -89,8 +96,9 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ['newBtnClick', 'editBtnClick'],
   components: { ZkTable },
-  setup(props) {
+  setup(props, { emit }) {
     // 0 获取用户权限
     const isCreate = usePermission(props.pageName, 'create');
     const isUpdate = usePermission(props.pageName, 'update');
@@ -133,18 +141,6 @@ export default defineComponent({
     // 4.获取其他的动态插槽名称
     const otherPropSlots = props.contentTableConfig?.propList.filter(
       (item: any) => {
-        // const map = {
-        //   status: false,
-        //   createAt: false,
-        //   updateAt: false,
-        //   handler: false,
-        // };
-
-        // if (map[item.slotName]) {
-        //   return map[item.slotName];
-        // } else {
-        //   return true;
-        // }
         if (item.slotName === 'status') return false;
         if (item.slotName === 'createAt') return false;
         if (item.slotName === 'updateAt') return false;
@@ -153,6 +149,21 @@ export default defineComponent({
         return true;
       },
     );
+    // 5.删除/编辑/新建操作
+    const handleDeleteClick = (item: any) => {
+      console.log(item);
+      store.dispatch('system/deletePageDateAction', {
+        pageName: props.pageName,
+        id: item.id,
+      });
+    };
+
+    const handleNewClick = () => {
+      emit('newBtnClick');
+    };
+    const handleEditClick = (item: any) => {
+      emit('editBtnClick', item);
+    };
     return {
       Edit,
       Delete,
@@ -165,6 +176,9 @@ export default defineComponent({
       isCreate,
       isUpdate,
       isDelete,
+      handleDeleteClick,
+      handleNewClick,
+      handleEditClick,
     };
   },
 });
